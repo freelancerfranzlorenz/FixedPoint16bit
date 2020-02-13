@@ -1,0 +1,174 @@
+<html>
+<title>FixedPoint Arithmetic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+<style>
+#cssTable th 
+{
+   background-color: #eeeeee;
+   font-size: 75%;
+}
+#cssTable td 
+{
+    text-align: center; 
+    vertical-align: middle;
+}
+</style>
+<script>
+   function calc()
+   {
+      let nVal = eval( document.getElementById( "value" ).value );
+      let nCur = 0.0;
+      let nRef = 0.5;
+      for( let nCtr=0; nCtr<15; nCtr++ )
+      {
+         let nDeltaP = Math.abs( nVal-(nCur+nRef) );
+         let nDeltaM = Math.abs( nVal-(nCur-nRef) );
+         let nDeltaN = Math.abs( nVal-(nCur) );
+         let sOp     = '';
+         //
+         if( ( nDeltaP < nDeltaM ) && ( nDeltaP < nDeltaN ) )
+         {
+            sOp = "+";
+            console.log( "nDeltaP" ); 
+            nCur = nCur + nRef;
+         }
+         if( ( nDeltaM < nDeltaP ) && ( nDeltaM < nDeltaN ) )
+         {
+            sOp = "-";
+            console.log( "nDeltaM" ); 
+            nCur = nCur - nRef;
+         }
+         if( ( nDeltaN < nDeltaM ) && ( nDeltaN < nDeltaP ) )
+         {
+            sOp = " ";
+            console.log( "nDeltaN" ); 
+         }
+         nRef = nRef / 2;
+         //
+         let Element = document.getElementById( nCtr );
+         let sColor  = "white";
+         Element.innerHTML = sOp;
+         if( sOp == "+" )  sColor = "lightgreen";
+         if( sOp == "-" )  sColor = "pink";
+         Element.style.backgroundColor = sColor;
+         //
+         document.getElementById( nCtr+"_0" ).innerHTML = "1/2<sup>"+(nCtr+1)+"</sup>";
+         document.getElementById( nCtr+"_0" ).style.backgroundColor = sColor;
+         document.getElementById( nCtr+"_1" ).innerHTML = nVal;
+         document.getElementById( nCtr+"_2" ).innerHTML = nCur;
+         let nError = nVal-nCur;
+         document.getElementById( nCtr+"_3" ).innerHTML = nError;
+         document.getElementById( nCtr+"_4" ).innerHTML = Math.round( Math.abs(nError)/nVal*10000 ) / 100;
+         //
+      }  //for()
+   }  //function()
+   
+   function init()
+   {
+      let aTH = document.getElementsByClassName( "bittable" );
+      for( let nCtr=0; nCtr<aTH.length; nCtr++ )
+      {
+         aTH[nCtr].innerHTML = "1/2<sup>"+(nCtr+1)+"</sup>";
+      }
+   }
+</script>
+
+<body onload="init();">
+<div class="w3-container w3-teal">
+   <h1>Fixed Point 16bit Factor Calculation</h1>
+</div>
+<br/>
+<div class="w3-container">
+   <div class="w3-card-4 w3-container w3-border">
+      <div class="w3-container">
+         <h2>Input</h2>
+      </div>
+      <div class="w3-cell-row">
+         <div class="w3-container w3-cell">
+            <label>Factor (fixed point) or mathematical expression</label>
+            <input class="w3-input w3-border w3-round" id="value" type="text">
+         </div>
+         <div class="w3-container w3-cell">
+            <button class="w3-button w3-round-large w3-orange" onclick='calc();'>Calculate</button>
+         </div>
+       </div>
+      <br/>
+   </div>
+</div>
+<br/>
+<div class="w3-container">
+   <div class="w3-card-4 w3-container w3-border">
+      <div class="w3-container">
+         <h2>Output</h2>
+      </div>
+      <div class="w3-container">
+         <table border='1' width='100%' id="cssTable">
+            <tr>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+               <th class="bittable"></th>
+            </tr>
+            <tr>
+               <td id="0">&nbsp;</td>
+               <td id="1">&nbsp;</td>
+               <td id="2">&nbsp;</td>
+               <td id="3">&nbsp;</td>
+               <td id="4">&nbsp;</td>
+               <td id="5">&nbsp;</td>
+               <td id="6">&nbsp;</td>
+               <td id="7">&nbsp;</td>
+               <td id="8">&nbsp;</td>
+               <td id="9">&nbsp;</td>
+               <td id="10">&nbsp;</td>
+               <td id="11">&nbsp;</td>
+               <td id="12">&nbsp;</td>
+               <td id="13">&nbsp;</td>
+               <td id="14">&nbsp;</td>
+            </tr>
+         </table>
+      </div>
+      <br/>
+      <div class="w3-container">
+         <table border='1' width='100%' id="cssTable">
+            <tr>
+               <th>Bit Value</th>
+               <th>Target Value</th>
+               <th>Current Value</th>
+               <th>Delta</th>
+               <th>Delta %</th>
+            </tr>
+            <tr> <td id="0_0"></td>  <td id="0_1"></td>  <td id="0_2"></td>  <td id="0_3"></td>  <td id="0_4"></td>  </tr>
+            <tr> <td id="1_0"></td>  <td id="1_1"></td>  <td id="1_2"></td>  <td id="1_3"></td>  <td id="1_4"></td>  </tr>
+            <tr> <td id="2_0"></td>  <td id="2_1"></td>  <td id="2_2"></td>  <td id="2_3"></td>  <td id="2_4"></td>  </tr>
+            <tr> <td id="3_0"></td>  <td id="3_1"></td>  <td id="3_2"></td>  <td id="3_3"></td>  <td id="3_4"></td>  </tr>
+            <tr> <td id="4_0"></td>  <td id="4_1"></td>  <td id="4_2"></td>  <td id="4_3"></td>  <td id="4_4"></td>  </tr>
+            <tr> <td id="5_0"></td>  <td id="5_1"></td>  <td id="5_2"></td>  <td id="5_3"></td>  <td id="5_4"></td>  </tr>
+            <tr> <td id="6_0"></td>  <td id="6_1"></td>  <td id="6_2"></td>  <td id="6_3"></td>  <td id="6_4"></td>  </tr>
+            <tr> <td id="7_0"></td>  <td id="7_1"></td>  <td id="7_2"></td>  <td id="7_3"></td>  <td id="7_4"></td>  </tr>
+            <tr> <td id="8_0"></td>  <td id="8_1"></td>  <td id="8_2"></td>  <td id="8_3"></td>  <td id="8_4"></td>  </tr>
+            <tr> <td id="9_0"></td>  <td id="9_1"></td>  <td id="9_2"></td>  <td id="9_3"></td>  <td id="9_4"></td>  </tr>
+            <tr> <td id="10_0"></td> <td id="10_1"></td> <td id="10_2"></td> <td id="10_3"></td> <td id="10_4"></td> </tr>
+            <tr> <td id="11_0"></td> <td id="11_1"></td> <td id="11_2"></td> <td id="11_3"></td> <td id="11_4"></td> </tr>
+            <tr> <td id="12_0"></td> <td id="12_1"></td> <td id="12_2"></td> <td id="12_3"></td> <td id="12_4"></td> </tr>
+            <tr> <td id="13_0"></td> <td id="13_1"></td> <td id="13_2"></td> <td id="13_3"></td> <td id="13_4"></td> </tr>
+            <tr> <td id="14_0"></td> <td id="14_1"></td> <td id="14_2"></td> <td id="14_3"></td> <td id="14_4"></td> </tr>
+         </table>
+      </div>
+      <br/>
+   </div>
+</div>
+</body>
+</html>
